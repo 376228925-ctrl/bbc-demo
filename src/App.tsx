@@ -18,7 +18,7 @@ import { MindsetReshaping } from './pages/MindsetReshaping';
 import { Role } from './types';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('mindset');
   const [role, setRole] = useState<Role>('GROUP_MGMT');
 
   useEffect(() => {
