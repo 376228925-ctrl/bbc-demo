@@ -1,0 +1,8 @@
+{
+  "name": "产品收益与客户方案智能中枢",
+  "description": "面向物流集团内部经营管理、地区一线经营作战、B 端客户方案共创的 AI 智能经营系统。",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
