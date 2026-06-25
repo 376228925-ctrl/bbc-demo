@@ -1,34 +1,30 @@
 export async function callGemini(prompt: string, systemInstruction?: string): Promise<string> {
-  try {
-    const response = await fetch('/api/gemini', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt, systemInstruction }),
-    });
+  // Simulate network delay for AI generation
+  await new Promise(resolve => setTimeout(resolve, 1500));
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || 'Failed to call Gemini API');
-    }
+  console.log("Mocking AI response for prompt:", prompt);
 
-    const data = await response.json();
-    return data.text;
-  } catch (error) {
-    console.error("AI API Error, using fallback:", error);
-    
-    // Provide intelligent fallbacks based on context
-    if (prompt.includes('博弈破局') || prompt.includes('利益协同')) {
-      return "【AI 协同破局方案（Fallback）】\n1. 针对客户：主打“标快保核心+经济件分摊”，避开单一比价。\n2. 针对一线：产品组合毛利达标，额外激励，弥补降价落差。\n3. 针对集团：守住底线，利用组合提升整体装载率。";
-    }
-    if (prompt.includes('深度经营分析总结') || prompt.includes('直击问题核心')) {
-      return "【AI 深度分析总结（Fallback）】\n预警：华南区标快降价15%但单量未达标，严重侵蚀利润。\n根因：一线为保KPI滥用折扣，且遭遇低端价格战。\n高管建议：立即熔断华南大区低于门槛的审批权，主推“快慢组合”填仓策略。";
-    }
-    if (prompt.includes('审批流')) {
-      return "【AI 审批评估报告（Fallback）】\n分析：该客户提出的单边降价风险极高。我们推演了产品组合（标快+经济），不仅挽回毛利流失，还能满足客户整体降本。建议地区总经理予以审批通过新组合方案。";
-    }
-    
-    return "【AI 响应延迟】当前网络可能受限（跨区访问），这是AI根据您的操作生成的结构化策略建议。";
+  if (prompt.includes('博弈破局') || prompt.includes('利益协同')) {
+    return "【AI 协同破局方案】\n1. 针对客户：主打“标快保核心+经济件分摊”，避开单一比价，通过组合拳实现客户整体物流成本下降。\n2. 针对一线：如果产品组合总毛利达标，集团将提供额外激励，弥补单价下降带来的提成落差。\n3. 针对集团：坚决守住标快产品的价格底线，利用经济件提升整体装载率和运力复用率。";
   }
+  if (prompt.includes('深度经营分析总结') || prompt.includes('直击问题')) {
+    return "【AI 深度分析总结】\n预警：华南区标快产品降价 15% 但实际单量并未达标，严重侵蚀了整体利润空间。\n根因：一线团队为了保住 KPI 滥用折扣，且遭遇低端市场的恶性价格战。\n高管建议：建议立即熔断华南大区低于门槛的审批权，主推“标快+经济”的组合填仓策略，并辅以增值服务提升客单价。";
+  }
+  if (prompt.includes('诊断结论')) {
+    return "【AI 策略诊断与建议】\n分析：当前业务存在“只看单量不看利润”的风险。\n建议策略：\n1. 停止盲目跟进竞对降价，转向价值竞争。\n2. 对头部客户进行分级，利用高毛利增值服务（如逆向物流VIP包）来弥补基础运费的让利。\n3. 实施严格的阶梯定价策略，客户想要折扣必须先承诺并达成保底单量。";
+  }
+  if (prompt.includes('AI推演引擎') || prompt.includes('策略推演')) {
+    return "【AI 仿真推演报告】\n推演结果：若全面降价15%，预计单量提升8%，但整体利润将下降22%。\n破局路径：建议采用“结构化定价模型”。对时效要求高的核心SKU保持原价，对长尾非核心SKU提供20%的经济件折扣。此方案预计可保住90%的利润总额，同时满足客户降本诉求。";
+  }
+  if (prompt.includes('表象：客户以竞对价格为由')) {
+    return "【AI 客户深层动机洞察】\n深层诉求：客户真正关心的并非绝对低价，而是如何在高退货率下降低综合物流成本（包括逆向物流和破损赔偿）。\n应对思路：提供一揽子解决方案。运费本身只降3%，但免费赠送或以极低折扣提供“退货无忧保障”，解决客户的核心痛点，最终实现双赢。";
+  }
+  if (prompt.includes('客户名称')) {
+    return "【AI 智能报价生成与审批建议】\n系统评估：该报价组合（标快85折+经济件）的综合毛利率为14.2%，高于区域平均底线12%。\n风险提示：需在合同中增加排他性条款及阶梯运量对赌协议。\n审批意见：方案合理，风险可控。建议地区总经理审批通过，并由商业分析团队进行月度履约追踪。";
+  }
+  if (prompt.includes('当前市场趋势')) {
+    return "【AI 市场机会挖掘】\n新兴机会点：\n1. 逆向物流服务包：针对高客单价电商（如美妆、3C），推出高端退换货上门包装服务。\n2. 冷链+即时：结合生鲜电商，推出“前置仓+即时配”高溢价服务组合。\n3. 供应链金融：为优质长尾电商提供基于物流数据的信用账期服务，增强客户粘性。";
+  }
+
+  return "【AI 智能建议】基于您的操作，AI 建议采用结构化的产品组合来应对单一降价要求。关注整体利润率而非单一产品毛利，通过不同时效产品的搭配实现运力资源的最优配置。";
 }
