@@ -14,7 +14,31 @@ export async function callGemini(prompt: string, systemInstruction?: string): Pr
     return "【AI 策略诊断与建议】\n分析：当前业务存在“只看单量不看利润”的风险。\n建议策略：\n1. 停止盲目跟进竞对降价，转向价值竞争。\n2. 对头部客户进行分级，利用高毛利增值服务（如逆向物流VIP包）来弥补基础运费的让利。\n3. 实施严格的阶梯定价策略，客户想要折扣必须先承诺并达成保底单量。";
   }
   if (prompt.includes('AI推演引擎') || prompt.includes('策略推演')) {
-    return "【AI 仿真推演报告】\n推演结果：若全面降价15%，预计单量提升8%，但整体利润将下降22%。\n破局路径：建议采用“结构化定价模型”。对时效要求高的核心SKU保持原价，对长尾非核心SKU提供20%的经济件折扣。此方案预计可保住90%的利润总额，同时满足客户降本诉求。";
+    return JSON.stringify({
+      scenarios: [
+        {
+          id: 'A',
+          name: '直接满足降价要求',
+          description: '给予标快全线15%折扣',
+          revenueChange: '+8%',
+          marginChange: '-22%',
+          churnRisk: 'Low',
+          difficulty: 'Low',
+          isRecommended: false
+        },
+        {
+          id: 'B',
+          name: '结构化定价模型',
+          description: '核心SKU原价，长尾SKU20%经济件折扣',
+          revenueChange: '+5%',
+          marginChange: '-2%',
+          churnRisk: 'Medium',
+          difficulty: 'Medium',
+          isRecommended: true
+        }
+      ],
+      reasoning: "【AI 仿真推演报告】\n推演结果：若全面降价15%，预计单量提升8%，但整体利润将下降22%。\n破局路径：建议采用“结构化定价模型”。对时效要求高的核心SKU保持原价，对长尾非核心SKU提供20%的经济件折扣。此方案预计可保住90%的利润总额，同时满足客户降本诉求。"
+    });
   }
   if (prompt.includes('表象：客户以竞对价格为由')) {
     return "【AI 客户深层动机洞察】\n深层诉求：客户真正关心的并非绝对低价，而是如何在高退货率下降低综合物流成本（包括逆向物流和破损赔偿）。\n应对思路：提供一揽子解决方案。运费本身只降3%，但免费赠送或以极低折扣提供“退货无忧保障”，解决客户的核心痛点，最终实现双赢。";

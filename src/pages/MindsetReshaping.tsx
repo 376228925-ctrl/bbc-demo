@@ -124,7 +124,7 @@ export function MindsetReshaping() {
     const [bg, border, text, iconBg, iconText] = themeStyles.split(' ');
 
     return (
-      <div className={cn("rounded-xl border p-4 flex flex-col shadow-sm transition-all relative group h-full", bg, border, className)}>
+      <div className={cn("rounded-xl border p-4 flex flex-col shadow-sm transition-all relative group h-full min-h-[280px] lg:min-h-0", bg, border, className)}>
         <div className="flex items-start justify-between mb-3 shrink-0">
           <div className="flex items-center gap-2">
             <div className={cn("p-1.5 rounded-lg", iconBg.replace('icon-bg-', 'bg-'), iconText.replace('icon-text-', 'text-'))}>
