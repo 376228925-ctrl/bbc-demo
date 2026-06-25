@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Brain, Edit2, Save, Target, Activity, Lightbulb, Users, TrendingUp, BookOpen, Layers, Network, Wallet, Link, Info } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Brain, Edit2, Save, Target, Activity, Lightbulb, Users, TrendingUp, BookOpen, Layers, Network, Wallet, Link, Info, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 interface CanvasItem {
@@ -91,6 +91,16 @@ export function MindsetReshaping() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState('');
   const [showGuides, setShowGuides] = useState(true);
+  const [isHeaderExpanded, setIsHeaderExpanded] = useState(true);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsHeaderExpanded(window.innerWidth >= 1024);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleEdit = (id: string, content: string) => {
     setEditingId(id);
@@ -181,46 +191,60 @@ export function MindsetReshaping() {
   return (
     <div className="space-y-4 h-full flex flex-col">
       {/* Header Section */}
-      <div className="bg-slate-900 rounded-xl border border-slate-800 p-5 shadow-sm text-white shrink-0">
-        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center shrink-0">
-                <Brain className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h2 className="text-lg font-bold tracking-wide">BCC 商业分析画布 (Business Case Canvas)</h2>
-                <p className="text-xs text-slate-400 mt-1">深度融合 BCC 教学理念与物流产品收益核心逻辑</p>
-              </div>
+      <div className="bg-slate-900 rounded-xl border border-slate-800 p-4 lg:p-5 shadow-sm text-white shrink-0 transition-all duration-300">
+        <div className="flex items-center justify-between gap-4 cursor-pointer lg:cursor-default" onClick={() => window.innerWidth < 1024 && setIsHeaderExpanded(!isHeaderExpanded)}>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 lg:w-10 lg:h-10 bg-indigo-500 rounded-lg flex items-center justify-center shrink-0">
+              <Brain className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
             </div>
-            <div className="text-xs text-slate-300 leading-relaxed max-w-3xl space-y-2">
-              <p><strong className="text-indigo-400">教学理念集成：</strong>BCC 强调从“拍脑袋决策”向“系统化商业论证”转变。在这里，我们不再单纯记录客户的压价要求，而是将每一次报价申请视为一个完整的商业案例（Business Case）。</p>
-              <p><strong className="text-emerald-400">结合收益管理：</strong>通过这个互动画布，要求一线和产品团队在申请折扣前，必须理清“客户场景”、“运力成本”、“组合方案”与“内部生态利益”。只有逻辑闭环，AI 推演才会通过。</p>
+            <div>
+              <h2 className="text-base lg:text-lg font-bold tracking-wide">BCC 商业分析画布 (Business Case Canvas)</h2>
+              <p className="text-[10px] lg:text-xs text-slate-400 mt-0.5 lg:mt-1">深度融合 BCC 教学理念与物流产品收益核心逻辑</p>
             </div>
           </div>
-          
-          <div className="flex flex-col gap-3 shrink-0">
-            <div className="bg-slate-800/80 p-3 rounded-lg border border-slate-700 min-w-[200px]">
-              <div className="flex items-center gap-2 text-xs text-indigo-300 font-bold mb-2">
-                  <BookOpen className="w-4 h-4" /> BCC 核心六问
-              </div>
-              <ul className="text-[10px] text-slate-400 space-y-1 list-disc list-inside">
-                  <li>为什么要做？(痛点与需求)</li>
-                  <li>我们提供什么？(价值主张)</li>
-                  <li>怎么交付？(运营与渠道)</li>
-                  <li>和谁一起？(伙伴与关系)</li>
-                  <li>怎么赚钱？(收益模型)</li>
-                  <li>成本多少？(成本结构)</li>
-              </ul>
-            </div>
-            <button 
-              onClick={() => setShowGuides(!showGuides)}
-              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-medium transition border border-slate-700 flex justify-center items-center"
-            >
-              <Info className="w-3 h-3 mr-1" /> {showGuides ? '隐藏教学指引' : '显示教学指引'}
-            </button>
-          </div>
+          <button 
+            className="lg:hidden p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-md transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsHeaderExpanded(!isHeaderExpanded);
+            }}
+          >
+            {isHeaderExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          </button>
         </div>
+
+        {isHeaderExpanded && (
+          <div className="mt-4 flex flex-col lg:flex-row lg:items-start justify-between gap-4 pt-4 border-t border-slate-800">
+            <div>
+              <div className="text-xs text-slate-300 leading-relaxed max-w-3xl space-y-2">
+                <p><strong className="text-indigo-400">教学理念集成：</strong>BCC 强调从“拍脑袋决策”向“系统化商业论证”转变。在这里，我们不再单纯记录客户的压价要求，而是将每一次报价申请视为一个完整的商业案例（Business Case）。</p>
+                <p><strong className="text-emerald-400">结合收益管理：</strong>通过这个互动画布，要求一线和产品团队在申请折扣前，必须理清“客户场景”、“运力成本”、“组合方案”与“内部生态利益”。只有逻辑闭环，AI 推演才会通过。</p>
+              </div>
+            </div>
+            
+            <div className="flex flex-col gap-3 shrink-0">
+              <div className="bg-slate-800/80 p-3 rounded-lg border border-slate-700 lg:min-w-[200px]">
+                <div className="flex items-center gap-2 text-xs text-indigo-300 font-bold mb-2">
+                    <BookOpen className="w-4 h-4" /> BCC 核心六问
+                </div>
+                <ul className="text-[10px] text-slate-400 space-y-1 list-disc list-inside">
+                    <li>为什么要做？(痛点与需求)</li>
+                    <li>我们提供什么？(价值主张)</li>
+                    <li>怎么交付？(运营与渠道)</li>
+                    <li>和谁一起？(伙伴与关系)</li>
+                    <li>怎么赚钱？(收益模型)</li>
+                    <li>成本多少？(成本结构)</li>
+                </ul>
+              </div>
+              <button 
+                onClick={() => setShowGuides(!showGuides)}
+                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-medium transition border border-slate-700 flex justify-center items-center"
+              >
+                <Info className="w-3 h-3 mr-1" /> {showGuides ? '隐藏教学指引' : '显示教学指引'}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Canvas Grid - Desktop (10 cols), Mobile (1 col) */}
